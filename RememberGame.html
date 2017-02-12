@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<style>
+    div{
+        position:absolute;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+
+<script>
+    var position = 0;    
+
+    function Game() {
+        $("div").each(function () {
+            $(this).remove();
+        });
+        document.getElementById("spn").innerHTML = "";
+        var sentence = document.getElementById("txtWord").value;
+        var sentenceArray = sentence.split(" ");
+        var word = sentenceArray[Math.floor(Math.random() * sentenceArray.length)];
+        document.getElementById("spn").innerHTML = "<br\>GAME ON!  The word is: "+'"'+word+'"'+"";
+        MakeDivs(word);        
+    }
+
+    function MakeDivs(word) {
+        for (var i = 0; i < word.length; i++) {
+            var randomtop = Math.floor(Math.random() * 300 - 150);
+            if (randomtop < 0) {
+                randomtop *= -1;
+            }
+            var randomleft = Math.floor(Math.random() * 300 - 150);
+            if (randomleft < 0) {
+                randomleft *= -1;
+            }
+            var randomzindex = Math.floor(Math.random() * 450 - 150);
+            $("#divs").append("<div id='randomdv " + i +
+                "' style='margin-left: " + randomleft +
+                "px; margin-top: " + randomtop +
+                "px;' value='" + word.charAt(i) + "' onclick='CheckChar(\"" + word + "\", this)' >*</div>");
+        }
+    }
+
+    function CheckChar(word, element) {
+        if (document.getElementById(element.id).innerHTML == '*') {
+            var char = document.getElementById(element.id).getAttribute('value');
+            if (word.charAt(position) == char) {
+                document.getElementById(element.id).innerHTML = char;
+                position++;
+            }
+            else {
+                position = 0;
+                document.getElementById(element.id).innerHTML = char;
+                setTimeout(function () {
+                    $("div").each(function () {
+                        $(this).text("*");
+                    });
+                }, 500);
+            }
+            if (position == word.length) {
+                document.getElementById("spn").innerHTML = "<br\>WOWW!!"
+
+            }
+        }
+    }
+
+</script>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body id="divs">
+    <input type="text" name="txt" id="txtWord" placeholder="Insert any word/ sentence" />
+    <input type="button" name="Strat game" value="Strat game" onclick="Game()" />
+    <span style="font-size:25px" id="spn"></span>
+</body>
+</html>
